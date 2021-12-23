@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--
+    Copyright 2020 Ketan Kachhela <l.kachhela28@gmail.com>
+    License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html).
+-->
+<odoo>
+
+    <template id="portal_my_invoices" inherit_id="account.portal_my_invoices" name="My Invoices and Payments">
+        <xpath expr="//thead//tr//th[1]" position="after">
+            <th>Invoices of the Months of:</th>
+            <th>Concepts</th>
+        </xpath>
+        <xpath expr="//tbody//tr//td[1]" position="after">
+            <td><span t-field="invoice.x_studio_mes_de_la_factura"/></td>
+            <td><span t-field="invoice.x_studio_concepto"/></td>
+        </xpath>
+    </template>
+
+    <template id="portal_my_payments" name="My Payments">
+        <t t-call="portal.portal_layout">
+            <t t-set="breadcrumbs_searchbar" t-value="True"/>
+            <t t-call="portal.portal_searchbar">
+                <t t-set="title">Payments</t>
+            </t>
+            <t t-if="not payments">
+                <p>There are currently no payments.</p>
+            </t>
+            <tr class="active">
+                <t t-if="attachment_ids">
+                    <th>
+                        <a class="btn btn-secondary o_attachment_download float-right"
+                           t-attf-href="/download/zip/zip/#{attachment_ids}?download=true" title="Download.pdf"><i class="fa fa-download"/> Download All XML</a>
+                    </th>
+                </t>
+            </tr>
+            <t t-if="payments" t-call="portal.portal_table">
+                <thead>
+                    <tr class="active">
+                        <th>Invoice #</th>
+                        <th>Payment #</th>
+                        <th>XML</th>
+                        <th>PDF</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <t t-foreach="payments" t-as="payment">
+                        <tr>
+                            <td>
+                                <a t-att-title="payment.name">
+                                    <t t-esc="payment.name" t-if="payment.name"/>
+                                </a>
+                            </td>
+                            <td>
+                                <span t-field="payment.name"/>
+                            </td>
+                            <td>
+                                <t t-if="payment.xml_attach_id">
+                                    <div class="btn-group  flex-grow-1 mr-1 mb-1">
+                                        <a class="btn btn-secondary btn-block o_attachment_download float-right"
+                                           t-attf-href="/web/content/#{payment.xml_attach_id.id}?download=true" title="Download.pdf"><i class="fa fa-download"/> XML</a>
+                                    </div>
+                                </t>
+                            </td>
+                            <td>
+                                <div class="btn-group  flex-grow-1 mr-1 mb-1">
+                                    <a class="btn btn-secondary btn-block o_print_btn o_portal_invoice_print"
+                                       t-att-href="payment.get_portal_url(report_type='pdf')" id="print_payment_report" title="Print" target="_blank"><i class="fa fa-print"/> Print</a>
+                                </div>
+                            </td>
+                        </tr>
+                    </t>
+                </tbody>
+            </t>
+        </t>
+    </template>
+
+</odoo>

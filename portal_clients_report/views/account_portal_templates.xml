@@ -1,0 +1,20 @@
+<odoo>
+
+    <template id="portal_invoice_page" name="Invoice Portal Template" inherit_id="account.portal_invoice_page">
+        <xpath expr="//a[hasclass('o_download_btn')]/.." position="after">
+            <t t-if="invoice.xml_attach_id">
+                <div class="btn-group  flex-grow-1 mr-1 mb-1">
+                    <a class="btn btn-secondary btn-block o_attachment_download float-right"
+                       t-attf-href="/web/content/#{invoice.xml_attach_id.id}?download=true" title="Download.pdf"><i class="fa fa-download"/> XML</a>
+                </div>
+            </t>
+            <t t-if="invoice.payment_ids">
+                <div class="btn-group  flex-grow-1 mr-1 mb-1">
+                    <a class="btn btn-secondary btn-block o_attachment_download float-right"
+                       t-attf-href="/my/invoice/paymentss/#{invoice.id}/?{{ keep_query() }}">Payments</a>
+                </div>
+            </t>
+        </xpath>
+    </template>
+
+</odoo>
