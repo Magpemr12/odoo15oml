@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_order_product_search" model="ir.ui.view">
+        <field name="name">sale.report.search</field>
+        <field name="model">sale.report</field>
+        <field name="inherit_id" ref="sale.view_order_product_search"/>
+        <field name="arch" type="xml">
+            <filter name="sales_channel" position="after">
+                <filter string="Document Rate" name="source_document_rate" context="{'group_by':'source_document_rate'}"/>
+            </filter>
+        </field>
+    </record>
+
+    <record id="sale_enterprise.sale_report_action_dashboard" model="ir.actions.act_window">
+        <field name="context"
+               eval="{
+                    'search_default_Sales': 1,
+                    'search_default_source_document_rate': 1,
+                    'time_ranges': {'field':'confirmation_date', 'range':'last_30_days'}}"/>
+    </record>
+</odoo>

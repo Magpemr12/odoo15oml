@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="invoice_inherit_view_for_inv_billing" model="ir.ui.view">
+        <field name="name">invoice.inherit.view.for.inv.billing</field>
+        <field name="model">account.move</field>
+        <field name="inherit_id" ref="account.view_move_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='invoice_payment_term_id']" position="after">
+                <field name="donation"/>
+                <field name="is_generic_invoice" invisible="1"/>
+                <field name="vat_general_public_sale" invisible="1"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

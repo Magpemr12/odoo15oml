@@ -52,8 +52,8 @@ class AccountInvoiceReport(models.Model):
         'res.partner': ['country_id'],
     }
 
-    def _select(self):
-        return super(AccountInvoiceReport, self)._select() + ", sub.discount_amount as discount_amount, sub.origine" #Se cambio origin
+    # def _select(self):
+    #     return super(AccountInvoiceReport, self)._select() + ", move.discount_amount as discount_amount, move.origine" #Se cambio origin
 
     def _sub_select(self):
         return super(AccountInvoiceReport, self)._sub_select() + ", ai.discount_amount as discount_amount, ai.origine"  #Se cambio origin

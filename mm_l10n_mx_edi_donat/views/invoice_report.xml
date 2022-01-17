@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <template id="rfc_report_invoice_document" inherit_id="account.report_invoice_document">
+            <xpath expr="//div[@class='mt16']" position="replace">
+                <t t-if="o.is_generic_invoice">
+                    <div class="mt16">
+                        <t t-esc="o.company_id.country_id.vat_label or 'Tax ID'"/>:
+                        <span t-field="o.vat_general_public_sale"/>
+                    </div>
+                </t>
+                <t t-else="">
+                    <div t-if="o.partner_id.vat" class="mt16">
+                        <t t-esc="o.company_id.country_id.vat_label or 'Tax ID'"/>:
+                        <span t-field="o.partner_id.vat"/>
+                    </div>
+                </t>
+            </xpath>
+            <xpath expr="//div[@t-if='not is_html_empty(o.narration)']" position="after">
+                <t t-if="o.donation">
+                <table class="table">
+                    <tbody>
+                        <tr>
+                            <td>
+                                VERSION
+                            </td>
+                            <td>
+                                1.1
+                            </td>
+                            <td>
+                                AUTORIZACION
+                            </td>
+                            <td>
+                                <span t-esc="o.company_id.l10n_mx_edi_donat_auth"/>
+                            </td>
+                            <td>
+                                Fecha De AUTORIZACION
+                            </td>
+                            <td>
+                                <span t-esc="o.company_id.l10n_mx_edi_donat_date"/>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <p style="text-align:justify">
+                    <span t-esc="o.company_id.l10n_mx_edi_donat_note"/>
+                </p>
+                </t>
+            </xpath>
+        </template>
+
+        <template id="sale.report_invoice_document_inherit_sale" inherit_id="account.report_invoice_document">
+            <xpath expr="//address" position="attributes">
+                <attribute name="groups">!sale.group_delivery_invoice_address</attribute>
+            </xpath>
+            <xpath expr="//address" position="before">
+                <t t-if="o.partner_shipping_id and (o.partner_shipping_id != o.partner_id)">
+                    <t t-set="information_block">
+                        <div groups="sale.group_delivery_invoice_address">
+                            <strong>Shipping address:</strong>
+                            <div t-field="o.partner_shipping_id"
+                                 t-options='{"widget": "contact", "fields": ["address", "name"], "no_marker": True}'/>
+                        </div>
+                    </t>
+                </t>
+                <div t-field="o.partner_id"
+                     t-options='{"widget": "contact", "fields": ["address", "name"], "no_marker": True}'
+                     groups="sale.group_delivery_invoice_address"/>
+            </xpath>
+        </template>
+
+    </data>
+</odoo>
